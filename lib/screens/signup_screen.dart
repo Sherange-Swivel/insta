@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insta/resources/auth_methods.dart';
 import 'package:insta/utils/colors.dart';
 import 'package:insta/widgets/text_field_input.dart';
 
@@ -102,6 +103,13 @@ class _SignupScreenState extends State<SignupScreen> {
                     height: 20,
                   ),
                   InkWell(
+                    onTap: () async {
+                      String res = await AuthMethods().signUpUser(
+                          email: _emailController.text,
+                          password: _passwordController.text,
+                          username: _usernameController.text,
+                          bio: _bioController.text);
+                    },
                     child: Container(
                       child: const Text("Sign up"),
                       width: double.infinity,
