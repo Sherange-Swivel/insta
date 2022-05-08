@@ -1,6 +1,10 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:insta/resources/auth_methods.dart';
 import 'package:insta/utils/colors.dart';
+import 'package:insta/utils/utils.dart';
 import 'package:insta/widgets/text_field_input.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -16,6 +20,9 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
 
+  Uint8List? _image;
+  bool _isLoading = false;
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -24,6 +31,34 @@ class _SignupScreenState extends State<SignupScreen> {
     _passwordController.dispose();
     _bioController.dispose();
     _usernameController.dispose();
+  }
+
+  void selectImage() async {
+    Uint8List imageFile = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = imageFile;
+    });
+  }
+
+  void signUpUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    String res = await AuthMethods().signUpUser(
+        email: _emailController.text,
+        password: _passwordController.text,
+        username: _usernameController.text,
+        bio: _bioController.text,
+        file: _image!);
+
+    if (res != "sucess") {
+      showSnackBar(res, context);
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -47,14 +82,19 @@ class _SignupScreenState extends State<SignupScreen> {
                   // circular avatar
                   Stack(
                     children: [
-                      const CircleAvatar(
-                        radius: 64,
-                        backgroundImage: NetworkImage(
-                            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"),
-                      ),
+                      _image != null
+                          ? CircleAvatar(
+                              radius: 64,
+                              backgroundImage: MemoryImage(_image!),
+                            )
+                          : const CircleAvatar(
+                              radius: 64,
+                              backgroundImage:
+                                  AssetImage("assets/images/profile_pic.jpg"),
+                            ),
                       Positioned(
                         child: IconButton(
-                          onPressed: () {},
+                          onPressed: selectImage,
                           icon: const Icon(Icons.add_a_photo),
                         ),
                         bottom: -10,
@@ -103,15 +143,25 @@ class _SignupScreenState extends State<SignupScreen> {
                     height: 20,
                   ),
                   InkWell(
-                    onTap: () async {
-                      String res = await AuthMethods().signUpUser(
-                          email: _emailController.text,
-                          password: _passwordController.text,
-                          username: _usernameController.text,
-                          bio: _bioController.text);
-                    },
+                    onTap: signUpUser,
                     child: Container(
-                      child: const Text("Sign up"),
+                      child: _isLoading
+                          ? const SizedBox(
+                              height: 20.0,
+                              width: 20.0,
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  color: primaryColor,
+                                ),
+                              ),
+                            )
+                          : const SizedBox(
+                              height: 20.0,
+                              width: 100.0,
+                              child: Center(
+                                child: Text("Sign up"),
+                              ),
+                            ),
                       width: double.infinity,
                       alignment: Alignment.center,
                       padding: const EdgeInsets.symmetric(vertical: 12),
