@@ -13,6 +13,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _formKey = GlobalKey<FormState>();
+
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -27,22 +29,24 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void loginUser() async {
-    setState(() {
-      _isLoading = true;
-    });
-    String res = await AuthMethods().loginUser(
-        email: _emailController.text, password: _passwordController.text);
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+      String res = await AuthMethods().loginUser(
+          email: _emailController.text, password: _passwordController.text);
 
-    if (res == "success") {
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const HomeScreen()));
-    } else {
-      showSnackBar(res, context);
+      if (res == "success") {
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const HomeScreen()));
+      } else {
+        showSnackBar(res, context);
+      }
+
+      setState(() {
+        _isLoading = false;
+      });
     }
-
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   @override
@@ -52,85 +56,100 @@ class _LoginScreenState extends State<LoginScreen> {
         child: SingleChildScrollView(
           // width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 32),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // svg image
-              Image.asset(
-                "assets/images/Insta-logo.png",
-                fit: BoxFit.contain,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              // text field email
-              TextFieldInput(
-                textEditingController: _emailController,
-                hintText: "Enter your email",
-                textInputType: TextInputType.emailAddress,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              // text field password
-              TextFieldInput(
-                textEditingController: _passwordController,
-                hintText: "Enter your password",
-                textInputType: TextInputType.text,
-                isPass: true,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              InkWell(
-                onTap: loginUser,
-                child: Container(
-                  child: _isLoading
-                      ? const SizedBox(
-                          height: 20.0,
-                          width: 20.0,
-                          child: Center(
-                            child: CircularProgressIndicator(
-                              color: primaryColor,
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // svg image
+                Image.asset(
+                  "assets/images/Insta-logo.png",
+                  fit: BoxFit.contain,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                // text field email
+                TextFieldInput(
+                  textEditingController: _emailController,
+                  hintText: "Enter your email",
+                  textInputType: TextInputType.emailAddress,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Email is required';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                // text field password
+                TextFieldInput(
+                  textEditingController: _passwordController,
+                  hintText: "Enter your password",
+                  textInputType: TextInputType.text,
+                  isPass: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Password is required';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                InkWell(
+                  onTap: loginUser,
+                  child: Container(
+                    child: _isLoading
+                        ? const SizedBox(
+                            height: 20.0,
+                            width: 20.0,
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                color: primaryColor,
+                              ),
                             ),
+                          )
+                        : const Text("Log in"),
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    decoration: const ShapeDecoration(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(4),
                           ),
-                        )
-                      : const Text("Log in"),
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  decoration: const ShapeDecoration(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(4),
+                        ),
+                        color: blueColor),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: const Text("Dont have an account?  "),
+                    ),
+                    GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: const Text(
+                          "Sign up",
+                          style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
-                      color: blueColor),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: const Text("Dont have an account?  "),
-                  ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: const Text(
-                        "Sign up",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  )
-                ],
-              )
-            ],
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),
