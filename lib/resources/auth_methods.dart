@@ -40,17 +40,42 @@ class AuthMethods {
         });
         res = "success";
       }
-    } on FirebaseAuthException catch (er) {
-      if (er.code == "email-already-in-use") {
+    } on FirebaseAuthException catch (error) {
+      if (error.code == "email-already-in-use") {
         res = "This email already in use";
-      } else if (er.code == "invalid-email") {
+      } else if (error.code == "invalid-email") {
         res = "Invalid email id";
-      } else if (er.code == "weak-password") {
+      } else if (error.code == "weak-password") {
         res = "Invalid password";
       }
-    } catch (er) {
-      print(er.toString());
-      res = er.toString();
+    } catch (error) {
+      res = error.toString();
+    }
+    return res;
+  }
+
+  // login in user
+  Future<String> loginUser({
+    required String email,
+    required String password,
+  }) async {
+    String res = "Some error occurred";
+    try {
+      if (email.isNotEmpty || password.isNotEmpty) {
+        await _auth.signInWithEmailAndPassword(
+            email: email, password: password);
+        res = "success";
+      } else {
+        res = "Please enter all the fields";
+      }
+    } on FirebaseAuthException catch (error) {
+      if (error.code == "wrong-password") {
+        res = "Invalid user name or password";
+      } else if (error.code == "user-not-found") {
+        res = "Invalid user name or password";
+      }
+    } catch (error) {
+      res = error.toString();
     }
     return res;
   }
