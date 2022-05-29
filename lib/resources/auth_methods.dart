@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:insta/models/user.dart' as model;
 import 'package:insta/resources/storage_methods.dart';
 
 class AuthMethods {
@@ -28,16 +29,20 @@ class AuthMethods {
         String imageUrl = await StorageMethods()
             .uploadImageToStorage("PROFILE_PHOTOS", file, false);
 
+        model.User user = model.User(
+            email: email,
+            uid: credential.user!.uid,
+            url: imageUrl,
+            username: username,
+            bio: bio,
+            followers: [],
+            following: []);
+
         //add user to databse
-        await _firestore.collection("users").doc(credential.user!.uid).set({
-          'username ': username,
-          'uid': credential.user!.uid,
-          'email': email,
-          'bio': bio,
-          "followers": [],
-          "following": [],
-          "url": imageUrl
-        });
+        await _firestore
+            .collection("users")
+            .doc(credential.user!.uid)
+            .set(user.toJson());
         res = "success";
       }
     } on FirebaseAuthException catch (error) {
