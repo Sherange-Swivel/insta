@@ -1,8 +1,9 @@
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+
 import 'package:insta/resources/auth_methods.dart';
+import 'package:insta/screens/login_screen.dart';
 import 'package:insta/utils/colors.dart';
 import 'package:insta/utils/utils.dart';
 import 'package:insta/widgets/text_field_input.dart';
@@ -59,7 +60,9 @@ class _SignupScreenState extends State<SignupScreen> {
           bio: _bioController.text,
           file: _image!);
 
-      if (res != "sucess") {
+      if (res == "success") {
+        //
+      } else {
         showSnackBar(res, context);
       }
 
@@ -67,6 +70,11 @@ class _SignupScreenState extends State<SignupScreen> {
         _isLoading = false;
       });
     }
+  }
+
+  void navigateToLogin() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const LoginScreen()));
   }
 
   @override
@@ -219,11 +227,13 @@ class _SignupScreenState extends State<SignupScreen> {
                           child: const Text("Dont have an account?  "),
                         ),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            navigateToLogin();
+                          },
                           child: Container(
                             padding: const EdgeInsets.symmetric(vertical: 8),
                             child: const Text(
-                              "Sign up",
+                              "Login",
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ),

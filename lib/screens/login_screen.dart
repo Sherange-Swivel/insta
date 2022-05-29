@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insta/resources/auth_methods.dart';
-import 'package:insta/screens/home_screen.dart';
+import 'package:insta/screens/signup_screen.dart';
 import 'package:insta/utils/colors.dart';
 import 'package:insta/utils/utils.dart';
 import 'package:insta/widgets/text_field_input.dart';
@@ -37,8 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
           email: _emailController.text, password: _passwordController.text);
 
       if (res == "success") {
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const HomeScreen()));
+        //
       } else {
         showSnackBar(res, context);
       }
@@ -47,6 +46,11 @@ class _LoginScreenState extends State<LoginScreen> {
         _isLoading = false;
       });
     }
+  }
+
+  void navigateToSignup() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const SignupScreen()));
   }
 
   @override
@@ -137,7 +141,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: const Text("Dont have an account?  "),
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        navigateToSignup();
+                      },
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 8),
                         child: const Text(
