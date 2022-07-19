@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:insta/utils/colors.dart';
+import 'package:insta/utils/global_variables.dart';
 import 'package:provider/provider.dart';
 import 'package:insta/models/user.dart';
 import 'package:insta/providers/user_provider.dart';
@@ -49,13 +50,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
     User user = Provider.of<UserProvider>(context).getUser;
     return Scaffold(
       body: PageView(
-        children: const [
-          Text("feed"),
-          Text("search"),
-          Text("add post"),
-          Text("noitificaion"),
-          Text("profile"),
-        ],
+        children: homeScreens,
         physics: const NeverScrollableScrollPhysics(),
         controller: pageController,
         onPageChanged: onPageChanged,
