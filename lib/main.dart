@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:insta/providers/user_provider.dart';
 
 import 'package:insta/responsive/mobile_screen_layout.dart';
@@ -46,8 +47,19 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Insta Clone',
-        theme: ThemeData.dark()
-            .copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
+        theme: ThemeData.dark().copyWith(
+          scaffoldBackgroundColor: mobileBackgroundColor,
+          textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)
+              .apply(bodyColor: Colors.white)
+              .copyWith(
+                headline6: const TextStyle(color: bodyTextColor),
+                subtitle1: const TextStyle(color: bodyTextColor),
+                subtitle2: const TextStyle(color: bodyTextColor),
+                bodyText1: const TextStyle(color: bodyTextColor),
+                bodyText2: const TextStyle(color: bodyTextColor),
+                caption: const TextStyle(color: bodyTextColor),
+              ),
+        ),
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {

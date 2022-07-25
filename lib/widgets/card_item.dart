@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insta/utils/colors.dart';
 
 class CardItem extends StatelessWidget {
   const CardItem({
@@ -33,82 +34,98 @@ class CardItem extends StatelessWidget {
                               "https://images.unsplash.com/photo-1554995207-c18c203602cb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80")),
                     ),
                     const SizedBox(height: 6),
-                    const Text(
-                      "Luxury Smat House",
-                      style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold),
+                    Text(
+                      "Luxury Smart House",
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle1!
+                          .copyWith(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 6),
-                    const Text(
-                      "Apartment . For Rent",
-                      style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey,
-                          fontWeight: FontWeight.bold),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Apartment ",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText2!
+                              .copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey),
+                        ),
+                        const Icon(Icons.brightness_1,
+                            size: 6.0, color: primaryTosca),
+                        Text(
+                          " For Rent",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText2!
+                              .copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey),
+                        )
+                      ],
                     ),
                     const SizedBox(height: 6),
-                    const Text(
+                    Text(
                       "68/4 Parakrama Mawatha, Panadura.",
-                      style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey,
-                          fontWeight: FontWeight.bold),
+                      style: Theme.of(context).textTheme.caption!.copyWith(
+                          fontWeight: FontWeight.bold, color: Colors.grey),
                     ),
                     const SizedBox(height: 8),
                     Row(
                       children: [
                         Text(
                           "\$2500",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18.0,
-                              color: Colors.teal[700]),
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle1!
+                              .copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: primaryTosca),
                         ),
-                        const Text(
+                        Text(
                           " /month",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12.0,
-                              color: Colors.grey),
+                          style: Theme.of(context).textTheme.caption!.copyWith(
+                              fontWeight: FontWeight.bold, color: Colors.grey),
                         ),
                       ],
                     ),
                     const SizedBox(height: 8),
                     Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.bed,
-                          color: Colors.orange[300],
+                          color: primaryPurple,
                         ),
                         const SizedBox(width: 6),
-                        const Text(
+                        Text(
                           "4",
-                          style: TextStyle(
-                              color: Colors.grey, fontWeight: FontWeight.bold),
+                          style: Theme.of(context).textTheme.caption!.copyWith(
+                              fontWeight: FontWeight.bold, color: Colors.grey),
                         ),
                         const Spacer(),
-                        Icon(
+                        const Icon(
                           Icons.bathtub,
-                          color: Colors.orange[300],
+                          color: primaryPurple,
                         ),
                         const SizedBox(width: 6),
-                        const Text(
+                        Text(
                           "4",
-                          style: TextStyle(
-                              color: Colors.grey, fontWeight: FontWeight.bold),
+                          style: Theme.of(context).textTheme.caption!.copyWith(
+                              fontWeight: FontWeight.bold, color: Colors.grey),
                         ),
                         const Spacer(),
-                        Icon(
+                        const Icon(
                           Icons.square_foot,
-                          color: Colors.orange[300],
+                          color: primaryPurple,
                         ),
                         const SizedBox(width: 6),
-                        const Text(
+                        Text(
                           "4",
-                          style: TextStyle(
-                              color: Colors.grey, fontWeight: FontWeight.bold),
+                          style: Theme.of(context).textTheme.caption!.copyWith(
+                              fontWeight: FontWeight.bold, color: Colors.grey),
                         ),
                         const Spacer(),
                       ],
