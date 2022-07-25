@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insta/widgets/card_item.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -6,7 +7,9 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(child: Text("Home Screen")),
+      body: SafeArea(
+        child: CardItem(),
+      ),
     );
   }
 }
